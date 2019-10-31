@@ -54,13 +54,25 @@ const followersArray = [];
 axios.get('https://api.github.com/users/robomantis19/followers')
   .then(res => { 
     console.log(res);
-    res.data.forEach(function(item){ 
-      IndexCard.appendChild(Profile(item)); 
+    
+    let FOLLOWERS = res.data.map(item => { 
+
+    
+      axios.get(`https://api.github.com/users/${item.login}`)
+          .then(response => { 
+
+            IndexCard.appendChild(Profile(response.data))
+          })
+          .catch(error => { 
+            console.log(error); 
+          })
+      
     })
-  })
+  })  
   .catch(error => { 
     console.log(error)
   })
+  
 
 
 /* Step 3: Create a function that accepts a single object as its only argument,
